@@ -1,0 +1,11 @@
+body {
+    font-family:"Luckiest Guy", sans-serif ;
+    color: orangered;
+    text-align: center;
+}
+
+#board {
+    width: 400px;
+    height: 250px;
+    background: blue;
+}
