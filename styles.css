@@ -5,7 +5,12 @@ body {
 }
 
 #board {
-    width: 400px;
-    height: 250px;
+    width: 540px;
+    height: 630px;
     background: blue;
+
+    margin: 0 auto;
+    display: inline-flex;
+    flex-wrap: wrap;
 }
+
