@@ -4,13 +4,30 @@ body {
     text-align: center;
 }
 
-#board {
-    width: 540px;
-    height: 630px;
-    background: blue;
-
-    margin: 0 auto;
-    display: inline-flex;
+.board {
+    width: 630px;
+    height: 540px;
+    background-color: blue;
+    display: flex;
     flex-wrap: wrap;
-}
+    border: 10px solid darkblue;
+    margin: 0 auto;
+    }
+    .board > div {
+        display: grid;
+        background-color: white;
+        margin:5px;
+        padding: 30px;
+        border-radius: 50%;
+        border: 1px solid red;
+        height: 18px;
+        width: 18px;
+        display: flex;
+        display: wrap;
+    }
+
+
+
+
+
 
