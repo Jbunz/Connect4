@@ -1,33 +1,24 @@
 body {
-    font-family:"Luckiest Guy", sans-serif ;
-    color: orangered;
-    text-align: center;
+  font-family: "Luckiest Guy", sans-serif;
+  color: orangered;
+  text-align: center;
 }
 
 .board {
-    width: 630px;
-    height: 540px;
-    background-color: blue;
-    display: flex;
-    flex-wrap: wrap;
-    border: 10px solid darkblue;
-    margin: 0 auto;
-    }
-    .board > div {
-        display: grid;
-        background-color: white;
-        margin:5px;
-        padding: 30px;
-        border-radius: 50%;
-        border: 1px solid red;
-        height: 18px;
-        width: 18px;
-        display: flex;
-        display: wrap;
-    }
-
-
-
-
-
-
+  width: 630px;
+  height: 540px;
+  background-color:  aqua;
+  display: flex;
+  flex-wrap: wrap;
+  border: 10px solid darkblue;
+  margin: 0 auto;
+}
+.board > div {
+  background-color: white;
+  margin: 5px;
+  padding: 30px;
+  border-radius: 50%;
+  border: 3px solid darkblue;
+  height: 14px;
+  width: 14px;
+}
