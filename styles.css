@@ -26,3 +26,9 @@ h1 {
   height: 14px;
   width: 14px;
 }
+.cell.selected {
+    background-color: red;
+}
+.cell.ai {
+    background-color: blue;
+}
