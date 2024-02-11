@@ -4,16 +4,20 @@ body {
   text-align: center;
 }
 
+h1 {
+  font-size: 60px;
+}
+
 .board {
   width: 630px;
   height: 540px;
-  background-color:  aqua;
+  background-color: aqua;
   display: flex;
   flex-wrap: wrap;
   border: 10px solid darkblue;
   margin: 0 auto;
 }
-.board > div {
+.cell {
   background-color: white;
   margin: 5px;
   padding: 30px;
