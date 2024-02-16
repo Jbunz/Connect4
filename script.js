@@ -1,80 +1,99 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const board = document.querySelector(".board");
-    const numColumns = 7;
-    const numRows = 6;
-    let currentPlayer = "Player 1";
-    let gameOver = false;
-  
-    // This code eliminated the need for 42 divs in HTML
-    // Code here to initialize the board.
-    const createBoard = () => {
-      for (let i = 0; i < numRows; i++) {
-        for (let j = 0; j < numColumns; j++) {
-          const cell = document.createElement("div");
-          cell.classList.add("cell");
-          cell.setAttribute("data-column", j);
-          cell.setAttribute("data-row", i);
-          board.appendChild(cell);
-        }
+  const board = document.querySelector(".board");
+  const numColumns = 7;
+  const numRows = 6;
+  let currentPlayer = "Player 1";
+  let gameOver = false;
+
+  // Code here to initialize the board.
+  const createBoard = () => {
+    for (let i = 0; i < numRows; i++) {
+      for (let j = 0; j < numColumns; j++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        cell.setAttribute("data-column", j);
+        cell.setAttribute("data-row", i);
+        cell.textContent = ""; // Set initial content to an empty string
+        board.appendChild(cell);
       }
-    };
-  
-    
+    }
+  };
+
+  //Function to check for tie
+  const checkTie = () => {
+    const cells = document.querySelectorAll(".cell");
+    for (let cell of cells) {
+      if (cell.textContent === "") {
+        return false;
+      }
+    }
+    return true;
+  };
+
   // Check win function
-const checkWin = (row, column, player) => {
+  const checkWin = (row, column, player) => {
+    console.log("Checking win for player:", player);
     const directions = [
-      [0, 1],   // Horizontal
-      [1, 0],   // Vertical
-      [1, 1],   // Diagonal (from top-left to bottom-right)
-      [1, -1]   // Diagonal (from top-right to bottom-left)
+      [0, 1], // Horizontal
+      [1, 0], // Vertical
+      [1, 1], // Diagonal (from top-left to bottom-right)
+      [1, -1], // Diagonal (from top-right to bottom-left)
     ];
-  
+
     for (const [dx, dy] of directions) {
       let count = 1; // Count of consecutive circles
       let x = row + dx;
       let y = column + dy;
-      while (x >= 0 && x < numRows && y >= 0 && y < numColumns &&
-             board.querySelector(`[data-row="${x}"][data-column="${y}"]`).textContent === player) {
+      while (
+        x >= 0 &&
+        x < numRows &&
+        y >= 0 &&
+        y < numColumns &&
+        board.querySelector(`[data-row="${x}"][data-column="${y}"]`)
+          .textContent === player
+      ) {
         count++;
         x += dx;
         y += dy;
       }
       x = row - dx;
       y = column - dy;
-      while (x >= 0 && x < numRows && y >= 0 && y < numColumns &&
-             board.querySelector(`[data-row="${x}"][data-column="${y}"]`).textContent === player) {
+      while (
+        x >= 0 &&
+        x < numRows &&
+        y >= 0 &&
+        y < numColumns &&
+        board.querySelector(`[data-row="${x}"][data-column="${y}"]`)
+          .textContent === player
+      ) {
         count++;
         x -= dx;
         y -= dy;
       }
-      if (count === 4) { // Change this line to check for exactly four circles
+      console.log("Count:", count);
+      if (count >= 4) {
         return true;
       }
     }
     return false;
   };
-  
-    //Function to check for tie
-    const checkTie = () => {
-      const cells = document.querySelectorAll(".cell");
-      for (let cell of cells) {
-        if (cell.textContent === "") {
-          return false;
-        }
-      }
-      return true;
-    };
-  
+
   // Player move function
-const playerMove = (column) => {
+  const playerMove = (column) => {
     if (!gameOver) {
       const cells = document.querySelectorAll(`.cell[data-column="${column}"]`);
       for (let i = numRows - 1; i >= 0; i--) {
         const cell = cells[i];
         if (cell.textContent === "") {
-          cell.textContent = currentPlayer === "Player 1" ? "X" : "O";
+          cell.textContent = currentPlayer === "Player 1" ? "PL" : "AI";
           cell.classList.add("selected");
-          if (checkWin(parseInt(cell.getAttribute("data-row")), parseInt(column), currentPlayer)) {
+          if (
+            checkWin(
+              parseInt(cell.getAttribute("data-row")),
+              parseInt(column),
+              currentPlayer
+            )
+          ) {
             gameOver = true;
             alert(`${currentPlayer} wins!`);
             return;
@@ -83,16 +102,17 @@ const playerMove = (column) => {
             gameOver = true;
             alert("It's a tie!");
           }
-          currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
+          currentPlayer =
+            currentPlayer === "Player 1" ? "Player 2" : "Player 1";
           if (currentPlayer === "Player 2") {
-            setTimeout(aiMove, 500); // Move setTimeout here
+            setTimeout(aiMove, 500); // setTimeout here
           }
           return;
         }
       }
     }
   };
-  
+
   // Event listener for players' click
   board.addEventListener("click", (event) => {
     if (currentPlayer === "Player 1") {
@@ -100,89 +120,97 @@ const playerMove = (column) => {
       playerMove(column);
     }
   });
-  
-    // Function to evaluate the desirability of a column for the AI
-    const evaluateColumn = (column) => {
-      const cells = document.querySelectorAll(`.cell[data-column="${column}"]`);
-      let score = 0;
-  
-      // Check vertically
-      for (let i = numRows - 1; i >= 0; i--) {
-        if (cells[i] && cells[i].textContent === "") {
-          score++;
-        } else {
-          break;
+
+  // Function for AI move
+  const aiMove = () => {
+    if (!gameOver) {
+      // Check if player has won
+      for (let column = 0; column < numColumns; column++) {
+        if (checkWin(numRows - 1, column, "PL")) {
+          gameOver = true;
+          alert("Player wins!");
+          return;
         }
       }
-  
-      // Check horizontally
-      for (let i = 0; i <= numColumns - 4; i++) {
-        let count = 0;
-        for (let j = i; j < i + 4; j++) {
-          if (cells[j] && cells[j].textContent === currentPlayer) {
-            count++;
-          }
-        }
-        if (count === 3) {
-          score += 5; // Encourage completing a line
-        }
-      }
-  
-      return score;
-    };
-  
-    // Function for AI move
-    const aiMove = () => {
-      if (!gameOver) {
-        let bestColumn = null;
-        let bestScore = -Infinity;
-  
-        // Evaluate each column's desirability
-        for (let column = 0; column < numColumns; column++) {
-          // Check if the column is not full
-          const cells = document.querySelectorAll(
-            `.cell[data-column="${column}"]`
-          );
-          if (cells[numRows - 1].textContent === "") {
-            // Calculate score for this column
-            const score = evaluateColumn(column);
+
+      // Proceed with AI move if player has not won
+      let bestColumn = null;
+      let bestScore = -Infinity;
+
+      // Evaluate each column's desirability
+      for (let column = 0; column < numColumns; column++) {
+        // Check if the column is not full
+        const cells = document.querySelectorAll(
+          `.cell[data-column="${column}"]`
+        );
+        for (let i = numRows - 1; i >= 0; i--) {
+          if (cells[i].textContent === "") {
+            // Calculate score for this cell
+            const score = evaluateColumn(column, "AI"); // AI's player token is "O"
             if (score > bestScore) {
               bestScore = score;
               bestColumn = column;
             }
-          }
-        }
-  
-        console.log("Best Column:", bestColumn, "Best Score:", bestScore);
-  
-        // Make the move in the column with the highest score
-        if (bestColumn !== null) {
-          for (let i = numRows - 1; i >= 0; i--) {
-            const cell = board.querySelector(
-              `.cell[data-row="${i}"][data-column="${bestColumn}"]`
-            );
-            if (cell.textContent === "") {
-              cell.textContent = currentPlayer === "Player 1" ? "X" : "O";
-              cell.classList.add("selected", "ai"); // Add both selected and AI class
-              if (checkWin(i, bestColumn, currentPlayer)) {
-                gameOver = true;
-                alert(`${currentPlayer} wins!`);
-              }
-              if (checkTie()) {
-                gameOver = true;
-                alert("It's a tie!");
-              }
-              currentPlayer =
-                currentPlayer === "Player 1" ? "Player 2" : "Player 1";
-              return;
-            }
+            break; // Move to the next column
           }
         }
       }
-    };
-  
-  
-    // Start game
-    createBoard();
-  });
-  
+
+      // Make the move in the column with the highest score
+      if (bestColumn !== null) {
+        const cells = document.querySelectorAll(
+          `.cell[data-column="${bestColumn}"]`
+        );
+        for (let i = numRows - 1; i >= 0; i--) {
+          if (cells[i].textContent === "") {
+            cells[i].textContent = "AI"; // AI's player token
+            cells[i].classList.add("selected", "ai"); // Add both selected and AI class
+            if (checkWin(i, bestColumn, "AI")) {
+              // Check if AI wins
+              gameOver = true;
+              alert("AI wins!");
+            }
+            if (checkTie()) {
+              gameOver = true;
+              alert("It's a tie!");
+            }
+            currentPlayer = "Player 1"; // Switch to human player's turn
+            return;
+          }
+        }
+      }
+    }
+  };
+
+  // Function to evaluate the desirability of a column for the AI
+  const evaluateColumn = (column, player) => {
+    const cells = document.querySelectorAll(`.cell[data-column="${column}"]`);
+    let score = 0;
+
+    // Check for player win
+    for (let i = 0; i <= numRows - 4; i++) {
+      let count = 0;
+      for (let j = i; j < i + 4; j++) {
+        const cell = board.querySelector(
+          `.cell[data-row="${j}"][data-column="${column}"]`
+        );
+        if (cell && cell.textContent === player) {
+          count++;
+        }
+      }
+      if (count === 4) {
+        // Player wins, return high score
+        return 1000;
+      }
+    }
+
+    // Other scoring logic for AI moves
+    // ...
+
+    return score; // Return the calculated score
+  };
+
+  // Start game
+  createBoard();
+  aiMove(); // Initiate AI's move at the beginning of the game
+});
