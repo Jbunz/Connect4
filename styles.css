@@ -1,36 +1,39 @@
 body {
   font-family: "Luckiest Guy", sans-serif;
-  color: orangered;
+  color: greenyellow;
   text-align: center;
+
+  background-image: url('images/nasa-rTZW4f02zY8-unsplash.jpg') ;
+
 }
 
 h1 {
-  font-size: 60px;
+  font-size:80px;
 }
 
 .board {
-  width: 630px;
+  width: 620px;
   height: 540px;
   background-image: url('images/volcano_floor.png');
   display: flex;
   flex-wrap: wrap;
-  border: 10px solid black;
+  border: 10px solid hsl(300, 84%, 25%);
   margin: 0 auto;
   justify-content: center;
   align-items: center;
 }
 .cell {
-  background-color: grey;
+  background-color: blanchedalmond;
   margin: 5px;
   padding: 10px; 
   border-radius: 50%;
-  border: 3px solid black;
+  border: 3px black;
   height: 50px; 
   width: 50px; 
 }
-.selected {
+.player {
   background-color: aqua;
 }
 .ai {
-  background-color: yellow;
+  background-color: orange;
 }

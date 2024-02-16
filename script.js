@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const cell = cells[i];
         if (cell.textContent === "") {
           cell.textContent = currentPlayer === "Player 1" ? "PL" : "AI";
-          cell.classList.add("selected");
+          cell.classList.add("player");
           if (
             checkWin(
               parseInt(cell.getAttribute("data-row")),
@@ -124,10 +124,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function for AI move
   const aiMove = () => {
     if (!gameOver) {
+      console.log("check AI move");
+      debugger; // check logic
       // Check if player has won
       for (let column = 0; column < numColumns; column++) {
         if (checkWin(numRows - 1, column, "PL")) {
           gameOver = true;
+          console.log("Player wins!");
           alert("Player wins!");
           return;
         }
@@ -147,6 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (cells[i].textContent === "") {
             // Calculate score for this cell
             const score = evaluateColumn(column, "AI"); // AI's player token is "O"
+            console.log(`Column ${column}, Row ${i}, Score: ${score}`);
             if (score > bestScore) {
               bestScore = score;
               bestColumn = column;
@@ -158,20 +162,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Make the move in the column with the highest score
       if (bestColumn !== null) {
+        console.log("AI chose column:", bestColumn);
         const cells = document.querySelectorAll(
           `.cell[data-column="${bestColumn}"]`
         );
         for (let i = numRows - 1; i >= 0; i--) {
           if (cells[i].textContent === "") {
             cells[i].textContent = "AI"; // AI's player token
-            cells[i].classList.add("selected", "ai"); // Add both selected and AI class
+            cells[i].classList.add("player", "ai"); // Add both selected and AI class
             if (checkWin(i, bestColumn, "AI")) {
               // Check if AI wins
               gameOver = true;
+              console.log("AI wins!");
               alert("AI wins!");
             }
             if (checkTie()) {
               gameOver = true;
+              console.log("It's a tie!");
               alert("It's a tie!");
             }
             currentPlayer = "Player 1"; // Switch to human player's turn
@@ -203,9 +210,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return 1000;
       }
     }
-
-    // Other scoring logic for AI moves
-    // ...
 
     return score; // Return the calculated score
   };
