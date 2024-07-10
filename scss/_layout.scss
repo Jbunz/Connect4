@@ -1,0 +1,29 @@
+
+.board {
+    width: 620px;
+    height: 540px;
+    @include background-image($board-background);
+    @include center-content;
+    flex-wrap: wrap;
+    border: 10px solid $secondary-color;
+    margin: 0 auto;
+}
+
+.cell {
+    background-color: $cell-color;
+    margin: 5px;
+    padding: 10px;
+    @include border-radius(50%);
+    border: 3px solid black;
+    height: $cell-size;
+    width: $cell-size;
+
+    // Nested selectors with SCSS ampersand
+    &.player {
+        background-color: $player-color;
+    }
+
+    &.ai {
+        background-color: $ai-color;
+    }
+}

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentPlayer = "Player 1";
   let gameOver = false;
 
-  // Code here to initialize the board.
+  //  initialize the board.
   const createBoard = () => {
     for (let i = 0; i < numRows; i++) {
       for (let j = 0; j < numColumns; j++) {
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  //Function to check for tie
+  // check for tie
   const checkTie = () => {
     const cells = document.querySelectorAll(".cell");
     for (let cell of cells) {

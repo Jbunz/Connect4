@@ -1,0 +1,11 @@
+// _base.scss
+body {
+    font-family: $font-family;
+    color: $primary-color;
+    text-align: center;
+    @include background-image($background-image);
+}
+
+h1 {
+    font-size: $h1-font-size;
+}
